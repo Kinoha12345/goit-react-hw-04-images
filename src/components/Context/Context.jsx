@@ -1,47 +1,57 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useState, useEffect } from "react";
+import getPhotos from "../../services/services";
+export const ImgContext = createContext();
 
-export const ImgContext = createContext()
 const ImgProvider = ({ children }) => {
-    const [value, setValue] = useState('');
-    const [images, setImages] = useState([]);
-    const [page, setPage] = useState(1);
-    const [largeImg, setLargeImg] = useState('');
-    const [isOpen, setIsOpen] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+  const [value, setValue] = useState('');
+  const [images, setImages] = useState([]);
+  const [page, setPage] = useState(1);
+  const [largeImg, setLargeImg] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-    const OnbtnClick = (e) => {
-        setPage(page + 1);
-        setIsLoading(true);
-      };
+  useEffect(()=>{
+    getPhotos(value, page).then((data) => {
+      setImages( page === 1 ? data.hits : [...images, ...data.hits] );
+      setIsLoading(false);
+    });
+      },[page,value]);
 
-      const onModalOpen = (url) => {
-        setLargeImg(url);
-        onTogleModal();
-      };
+  const OnbtnClick = (e) => {
+    setPage(page + 1);
+    setIsLoading(true);
+  };
 
-      const onTogleModal = () => {
-        setIsOpen(!isOpen);
-      };
+  const onModalOpen = (url) => {
+    setLargeImg(url);
+    onTogleModal();
+  };
 
-      const onBtnSubmit = (value) => {
-        setPage(1)
-        setImages([])
-        setValue(value);
-      };
+  const onTogleModal = () => {
+    setIsOpen(!isOpen);
+  };
 
-      const data = {
-        value,
-        images,
-        page,
-        largeImg,
-        isOpen,
-        isLoading,
-        OnbtnClick,
-        onModalOpen,
-        onTogleModal,
-        onBtnSubmit
-      }
-    return <ImgContext.Provider value={data}>{ children }</ImgContext.Provider>;
+  const onBtnSubmit = (value) => {
+    setPage(1)
+    setImages([])
+    setValue(value);
+  };
+
+
+    return (<ImgContext.Provider value={{
+      value,
+      images,
+      page,
+      largeImg,
+      isOpen,
+      isLoading,
+      OnbtnClick,
+      onModalOpen,
+      onTogleModal,
+      onBtnSubmit
+    }}>{ children }</ImgContext.Provider>)
 }
+
+
 
 export default ImgProvider;

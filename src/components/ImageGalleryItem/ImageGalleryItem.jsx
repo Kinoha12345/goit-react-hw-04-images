@@ -1,15 +1,15 @@
-import PropTypes from 'prop-types';
-const ImageGalleryItem = ({images,onModalOpen}) => {
-
+import { useContext } from "react";
+import { ImgContext } from "../Context/Context";
+const ImageGalleryItem = () => {
+  const { images, onModalOpen } = useContext(ImgContext)
  return (images.map((el) => 
    <li className="ImageGalleryItem" onClick={()=>{onModalOpen(el.largeImageURL)}} key={el.id}>
     <img className="ImageGalleryItem-image" src={el.webformatURL} alt="" />
   </li>)
 )
 }
-ImageGalleryItem.propTypes = {
-images: PropTypes.arrayOf(PropTypes.object)
 
-}
+
+
 export default ImageGalleryItem;
  

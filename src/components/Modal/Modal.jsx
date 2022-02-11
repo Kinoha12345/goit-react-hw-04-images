@@ -1,8 +1,9 @@
-import { useEffect } from "react";
-import PropTypes from 'prop-types';
+import { useEffect, useContext } from "react";
+import { ImgContext } from "../Context/Context";
 
-const Modal = ({url,onTogleModal}) => {
-    
+
+const Modal = () => {
+  const {largeImg,onTogleModal} = useContext(ImgContext)
  const oncloseModal = (e)=>{
     //  console.log(e.target);
     console.log(e.key === 'Escape');
@@ -13,12 +14,9 @@ const Modal = ({url,onTogleModal}) => {
     
     return ( <div className="Overlay" onClick={oncloseModal}>
     <div className="Modal">
-      <img src={url} alt="" />
+      <img src={largeImg} alt="" />
     </div>
   </div> );
 }
-Modal.propTypes = {
-  url: PropTypes.string.isRequired,
-  onTogleModal: PropTypes.func.isRequired
-}
+
 export default Modal;

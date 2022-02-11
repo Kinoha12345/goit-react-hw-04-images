@@ -1,11 +1,13 @@
-import { useState } from "react"
-import PropTypes from 'prop-types';
-const SearchBar = ({onBtnSubmit}) => {
+import { useState, useContext } from "react";
+import { ImgContext } from "../Context/Context";
+
+const SearchBar = () => {
+  const {onBtnSubmit} = useContext(ImgContext)
    const[value,setValue]= useState('')
   
     return(
         <header className="Searchbar">
-  <form className="SearchForm" onSubmit={(e)=>{ e.preventDefault();onBtnSubmit(value)}}>
+  <form className="SearchForm" onSubmit={(e)=>{ e.preventDefault(); onBtnSubmit(value)}}>
     <button type="submit" className="SearchForm-button" >
       <span className="SearchForm-button-label">Search</span>
     </button>
@@ -23,7 +25,5 @@ const SearchBar = ({onBtnSubmit}) => {
 </header>
     )
 }
-SearchBar.propTypes = {
-  onBtnSubmit: PropTypes.func.isRequired
-}
+
 export default SearchBar
